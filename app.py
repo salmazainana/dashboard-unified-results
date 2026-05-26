@@ -96,13 +96,19 @@ with tab1:
 
     # Style p-value columns
     p_cols = [c for c in table_df.columns if c.startswith("p_")]
+    def color_pval(v):
+        try:
+            if pd.notna(v) and float(v) < p_threshold:
+                return "background-color: #d4edda; color: #155724"
+            elif pd.notna(v) and float(v) < 0.25:
+                return "background-color: #fff3cd; color: #856404"
+        except (TypeError, ValueError):
+            pass
+        return ""
+
     styled = table_df.style.format(
         {c: "{:.3g}" for c in table_df.columns if c != "gene"}
-    ).applymap(
-        lambda v: "background-color: #d4edda; color: #155724" if pd.notna(v) and v < p_threshold else
-                  ("background-color: #fff3cd; color: #856404" if pd.notna(v) and v < 0.25 else ""),
-        subset=p_cols
-    )
+    ).map(color_pval, subset=p_cols)
 
     st.dataframe(styled, use_container_width=True, height=500)
 
