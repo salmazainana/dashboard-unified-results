@@ -274,6 +274,8 @@ with tab4:
                 p    = r["p-value"]
                 bar_color = colors[i % len(colors)]
                 opacity = 1.0 if (pd.notna(p) and p < p_threshold) else 0.4
+                coef_str = f"{coef:.4g}" if pd.notna(coef) else "N/A"
+                p_str = f"{p:.4g}" if pd.notna(p) else "N/A"
                 fig.add_trace(go.Bar(
                     name=r["Predictor"],
                     x=[r["Predictor"]],
@@ -282,8 +284,8 @@ with tab4:
                     opacity=opacity,
                     hovertemplate=(
                         f"<b>{r['Predictor']}</b><br>"
-                        f"Coefficient: {coef:.4g if pd.notna(coef) else 'N/A'}<br>"
-                        f"p-value: {p:.4g if pd.notna(p) else 'N/A'}<extra></extra>"
+                        f"Coefficient: {coef_str}<br>"
+                        f"p-value: {p_str}<extra></extra>"
                     ),
                 ))
 
