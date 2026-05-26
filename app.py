@@ -18,7 +18,8 @@ st.title("🧬 Unified Results Dashboard")
 DATA_DIR = Path(__file__).parent / "data"
 
 @st.cache_data
-def load_file(path: str) -> pd.DataFrame:
+def load_file(path: str, _mtime: float) -> pd.DataFrame:
+    """_mtime is passed so the cache is busted whenever the file changes."""
     df = pd.read_csv(path, sep="\t", compression="gzip" if path.endswith(".gz") else None)
     df.replace("", np.nan, inplace=True)
     for col in df.columns:
@@ -38,7 +39,9 @@ with st.sidebar:
     st.header("⚙️ Settings")
 
     selected_label = st.selectbox("Dataset", list(file_labels.keys()))
-    df = load_file(file_labels[selected_label])
+    selected_path = file_labels[selected_label]
+    mtime = Path(selected_path).stat().st_mtime
+    df = load_file(selected_path, mtime)
 
     st.markdown("---")
     p_threshold = st.slider("p-value significance threshold", 0.01, 0.25, 0.05, 0.01)
