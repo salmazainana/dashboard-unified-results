@@ -192,7 +192,9 @@ with tab3:
             colorscale = "Reds"
             zmin = 0
             finite = matrix[np.isfinite(matrix)]
-            zmax = np.percentile(finite, 99) if len(finite) > 0 else None
+            zmax = float(np.percentile(finite, 99)) if len(finite) > 0 else None
+            if zmax is not None:
+                matrix = np.where(np.isfinite(matrix), matrix, zmax)
             colorbar_title = "-log₁₀(p)"
         else:
             matrix = np.full((len(genes_sorted), len(pred_labels)), np.nan)
@@ -225,6 +227,8 @@ with tab3:
             height=max(400, len(genes_sorted) * 22),
             margin=dict(l=10, r=10, t=30, b=60),
             xaxis=dict(side="top"),
+            paper_bgcolor="white",
+            plot_bgcolor="white",
         )
         st.plotly_chart(fig, use_container_width=True)
 
