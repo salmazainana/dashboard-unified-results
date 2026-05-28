@@ -56,6 +56,11 @@ with st.sidebar:
     st.markdown("---")
     hide_missing_pmodel = st.checkbox("Hide genes without p_model", value=False)
 
+    st.markdown("---")
+    if st.button("🔄 Clear cache & reload"):
+        st.cache_data.clear()
+        st.rerun()
+
 # ── Derive useful columns ─────────────────────────────────────────────────────
 df_display = df.copy()
 if hide_missing_pmodel:
