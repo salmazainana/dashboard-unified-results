@@ -190,7 +190,9 @@ with tab3:
                     matrix[:, j] = -np.log10(vals.astype(float))
 
             colorscale = "Reds"
-            zmin, zmax = 0, None
+            zmin = 0
+            finite = matrix[np.isfinite(matrix)]
+            zmax = np.percentile(finite, 99) if len(finite) > 0 else None
             colorbar_title = "-log₁₀(p)"
         else:
             matrix = np.full((len(genes_sorted), len(pred_labels)), np.nan)
