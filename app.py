@@ -44,7 +44,7 @@ with st.sidebar:
     df = load_file(selected_path, mtime)
 
     st.markdown("---")
-    p_exp = st.slider("p-value significance threshold (log₁₀ scale)", -6, -1, -2, 1,
+    p_exp = st.slider("p-value significance threshold (log₁₀ scale)", -12, 0, -2, 1,
                       format="1e%d")
     p_threshold = 10 ** p_exp
     st.caption(f"Current threshold: p < {p_threshold:.0e}")
