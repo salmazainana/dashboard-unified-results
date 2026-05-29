@@ -46,6 +46,10 @@ with st.sidebar:
     st.markdown("---")
     p_threshold = st.slider("p-value significance threshold", 0.01, 0.25, 0.05, 0.01)
 
+    n_sig = int((df["p_model"] < p_threshold).sum())
+    n_total = int(df["p_model"].notna().sum())
+    st.metric("Significant genes", f"{n_sig} / {n_total}", help=f"Genes with p_model < {p_threshold}")
+
     st.markdown("---")
     st.markdown("**Predictors to show**")
     show_constraint    = st.checkbox("Log constraint",     value=True)
