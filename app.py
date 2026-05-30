@@ -27,8 +27,18 @@ def load_file(path: str, _mtime: float) -> pd.DataFrame:
             df[col] = pd.to_numeric(df[col], errors="coerce")
     return df
 
+def _make_label(filename: str) -> str:
+    base = filename.replace(".tsv.gz", "")
+    parts = base.split(".unified_results")
+    prefix = parts[0].replace("_", " ").upper()
+    if len(parts) > 1 and parts[1]:
+        filter_map = {"n_cohorts_ge4": "n≥4 cohorts", "MAF_le_001": "MAF≤1%"}
+        filter_parts = [filter_map.get(f, f) for f in parts[1].lstrip(".").split(".")]
+        return f"{prefix} ({', '.join(filter_parts)})"
+    return prefix
+
 result_files = sorted(DATA_DIR.glob("*.tsv.gz"))
-file_labels = {f.name.replace(".unified_results.tsv.gz", "").replace("_", " ").upper(): str(f) for f in result_files}
+file_labels = {_make_label(f.name): str(f) for f in result_files}
 
 if not file_labels:
     st.error("No `.tsv.gz` result files found in the `data/` folder.")
