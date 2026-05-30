@@ -32,7 +32,7 @@ def _make_label(filename: str) -> str:
     parts = base.split(".unified_results")
     prefix = parts[0].replace("_", " ").upper()
     if len(parts) > 1 and parts[1]:
-        filter_map = {"n_cohorts_ge4": "n≥4 cohorts", "MAF_le_001": "MAF≤1%"}
+        filter_map = {"n_cohorts_ge4": "n cohorts ≥ 4", "MAF_le_001": "MAF ≤ 0.001"}
         filter_parts = [filter_map.get(f, f) for f in parts[1].lstrip(".").split(".")]
         return f"{prefix} ({', '.join(filter_parts)})"
     return prefix
